@@ -1,0 +1,49 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+quantity = []
+years = list(range(1999,2022))
+national = []
+international = []
+
+data = pd.read_csv('datam&a.csv', sep=',')
+
+for x in years:
+    x = str(x)
+    n = 0
+    n2 = 0
+    n3 = 0
+
+    for y in data['Date Announced']:
+        if x in y:
+
+            if 'Netherlands' == data['Acquiror Nation'].iloc[n]:
+                n2+=1
+            else:
+                n3+=1
+
+            n += 1
+
+    quantity.append(n)
+    national.append(n2)
+    international.append(n3)
+
+years = np.array(years)
+quantity = np.array(quantity)
+national = np.array(national)
+international = np.array(international)
+international_percent = np.round((international/quantity),4)
+
+print(quantity)
+print(international_percent)
+fig, ax = plt.subplots()
+
+ax.bar(years, national, label='National Acquiror')
+ax.bar(years, international, bottom=national, label='International Acquiror')
+
+ax.set_ylabel('Acquisitions')
+ax.set_title('Yearly Amount and Origin of Acquisitions in The Netherlands')
+ax.legend()
+
+plt.show()
